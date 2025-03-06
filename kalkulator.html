@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<head>
+    <title>Kalkulator</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+        .calculator {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        #layar {
+            width: 100%;
+            height: 50px;
+            background-color: #222;
+            color: #fff;
+            font-size: 2em;
+            text-align: right;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        table {
+            width: 100%;
+        }
+        td {
+            padding: 5px;
+        }
+        button {
+            width: 100%;
+            height: 50px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            font-size: 1.5em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #555;
+        }
+        .operator {
+            background-color: #ff9500;
+        }
+        .operator:hover {
+            background-color: #ffaa33;
+        }
+        .clear {
+            background-color: #ff3b30;
+        }
+        .clear:hover {
+            background-color: #ff5e52;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Kalkulator</h1>
+        <input id="layar" readonly>
+        <table>
+            <tr>
+                <td><button class="operator" onclick="clickOperator('+')">+</button></td>
+                <td><button class="operator" onclick="clickOperator('-')">-</button></td>
+                <td><button class="operator" onclick="clickOperator('*')">x</button></td>
+                <td><button class="operator" onclick="clickOperator('/')">/</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="clickAngka('7')">7</button></td>
+                <td><button onclick="clickAngka('8')">8</button></td>
+                <td><button onclick="clickAngka('9')">9</button></td>
+                <td rowspan="2"><button class="clear" onclick="clickC()" style="height: 115px;">C</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="clickAngka('4')">4</button></td>
+                <td><button onclick="clickAngka('5')">5</button></td>
+                <td><button onclick="clickAngka('6')">6</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="clickAngka('1')">1</button></td>
+                <td><button onclick="clickAngka('2')">2</button></td>
+                <td><button onclick="clickAngka('3')">3</button></td>
+                <td rowspan="2"><button class="operator" onclick="hitung()" style="height: 115px; background-color: green;">=</button></td>
+            </tr>
+            <tr>
+                <td colspan="2"><button onclick="clickAngka('0')">0</button></td>
+                <td><button onclick="clickAngka('.')">.</button></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let layar = document.getElementById("layar");
+        let angkaPertama = null;
+        let operator = null;
+        let resetLayar = false;
+      
+        function clickAngka(angka){
+            if (resetLayar){
+                layar.value = angka;
+                resetLayar = false;
+            }else{
+                layar.value = layar.value === "0" ? angka : layar.value + angka;
+            }
+        }
+        function clickOperator(op){
+            if (layar.value === "") return;
+            if (operator !== null && !resetLayar){
+                hitung();
+            }
+            angkaPertama = parseFloat(layar.value);
+            operator = op;
+            resetLayar = true;
+        }
+        function hitung(){
+            if (operator === null || resetLayar) return;
+            let angkaKedua = parseFloat(layar.value);
+            let hasil;
+            switch (operator){
+                case '+':
+                    hasil = angkaPertama + angkaKedua;
+                    break;
+                case '-':
+                    hasil = angkaPertama - angkaKedua;
+                    break;
+                case '*':
+                    hasil = angkaPertama * angkaKedua;
+                    break;
+                case '/':
+                    hasil = angkaPertama / angkaKedua;
+                    break;
+                default:
+                    return;
+            }
+            layar.value = hasil;
+            operator = null;
+            resetLayar = true;
+        }
+        function clickC(){
+            layar.value = "0";
+            angkaPertama = null;
+            operator = null;
+            resetLayar = false;
+        }
+    </script>
+</body>
+</html>
